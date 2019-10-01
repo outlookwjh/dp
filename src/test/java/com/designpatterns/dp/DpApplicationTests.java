@@ -4,14 +4,34 @@ import com.designpatterns.abstractFactory.factory.NorthFactory;
 import com.designpatterns.abstractFactory.factory.SourthFactory;
 import com.designpatterns.abstractFactory.factory.fruitFactory;
 import com.designpatterns.abstractFactory.product.Fruit_af;
+import com.designpatterns.adapter.Yaoming;
+import com.designpatterns.adapter.YaomingAdapter;
+import com.designpatterns.bridge.example1.Bus2000;
+import com.designpatterns.bridge.example2.Bus;
+import com.designpatterns.bridge.example3.CarInstall;
 import com.designpatterns.builder.ClassRoomBuilder;
 import com.designpatterns.builder.Director;
 import com.designpatterns.builder.House;
 import com.designpatterns.builder.HouseBuilder;
+import com.designpatterns.chain_of_responsibility.MakeCar;
+import com.designpatterns.chain_of_responsibility.MakeCarBody;
+import com.designpatterns.chain_of_responsibility.MakeCarHead;
+import com.designpatterns.chain_of_responsibility.MakeCarTail;
+import com.designpatterns.command.*;
 import com.designpatterns.decorator.*;
 import com.designpatterns.facade.FacadeClass;
 import com.designpatterns.factorymethod.AppleFactory;
 import com.designpatterns.factorymethod.peerFactory;
+import com.designpatterns.interpreter.DecreInterpreter;
+import com.designpatterns.interpreter.Expression;
+import com.designpatterns.interpreter.PlusInterpreter;
+import com.designpatterns.mediator.exampl1.Man;
+import com.designpatterns.mediator.exampl1.Persion;
+import com.designpatterns.mediator.exampl1.Women;
+import com.designpatterns.mediator.exampl2.Mediator;
+import com.designpatterns.memento.CareTaker;
+import com.designpatterns.memento.Company;
+import com.designpatterns.memento.CompanyMemento;
 import com.designpatterns.observer.ClickClass;
 import com.designpatterns.observer.StudentClass;
 import com.designpatterns.observer.TeacherClass;
@@ -30,6 +50,9 @@ import com.designpatterns.singleton.Person1;
 import com.designpatterns.singleton.Person2;
 import com.designpatterns.strategy.Context;
 import com.designpatterns.strategy.strategy;
+import com.designpatterns.template.Fight;
+import com.designpatterns.template.ManFight;
+import com.designpatterns.visitor.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -280,6 +303,218 @@ class DpApplicationTests {
         facade.buyGG();
 
         facade.buyJiJin();
+    }
+
+    /**
+     * 桥接模式
+     */
+    @Test
+    void testBridge() {
+        //example1 扩展性问题：1. 当要增加一个卡车类时，需要增加cart抽象类，并需要增加cart2000和cart2200类
+        //扩展性差，增加的类多
+        com.designpatterns.bridge.example1.Car car = new Bus2000();
+        car.installEngine();
+
+        //example2 扩展性问题：1. bus不需要安装2200cc和2300发动机；2. 需要增加引擎种类时，需要
+        //修改car接口，同时要修改bus类
+        com.designpatterns.bridge.example2.Car car1 = new Bus();
+        car1.install2000Engine();
+        //example3  将车和安装引擎动作分开，让车持有安装引擎的接口，并在车的具体实现中获取安装引擎接口对象引用，
+        // 利用抽象方法在子类中的不同，实现差异性，解决了example2中的问题1和2
+
+        com.designpatterns.bridge.example3.Bus bus =
+                new com.designpatterns.bridge.example3.Bus2000(new CarInstall());
+        bus.CarInstall();
+    }
+
+    /**
+     * adapter适配器
+     */
+    @Test
+    void testAdapter() {
+
+        Yaoming yaoming = new Yaoming();
+
+        yaoming.ymSpeaking();
+
+        YaomingAdapter adapter = new YaomingAdapter(new Yaoming());
+
+        adapter.translate();
+
+    }
+
+    /**
+     * interpreter 解释器模式
+     */
+    @Test
+    void testInterpreter() {
+
+        //功能测试
+        com.designpatterns.interpreter.Context context = new com.designpatterns.interpreter.Context();
+        context.setInput(10);
+        Expression expression = new PlusInterpreter();
+        expression.interprete(context);
+        System.out.println(context.getInput());
+        Expression expression1 = new DecreInterpreter();
+        expression1.interprete(context);
+        System.out.println(context.getInput());
+
+        //日常用法
+        List<Expression> exList = new ArrayList<>();
+        exList.add(new PlusInterpreter());
+        exList.add(new PlusInterpreter());
+        exList.add(new DecreInterpreter());
+        for (Expression ex : exList) {
+            ex.interprete(context);
+            System.out.println(context.getInput());
+        }
+    }
+
+    /**
+     * mediator 中介者模式
+     */
+    @Test
+    void testmediator() {
+
+        //example1: 问题：women和man两个类交互时，高度耦合，当其中一个改变时，另外一个也要改变
+        Persion man = new Man("wjh","level1");
+
+        Persion women = new Women("liulili" ,"level1");
+
+        Persion wemen = new Women("lixinai","level2");
+
+        /*man.getParter(women);
+
+        women.getParter(man);
+
+        women.getParter(wemen);*/
+
+        //example2 : 利用中介者模式，中介者担任两个类交互的角色，可以控制两个类的交互，当交互需要变化时，两个类不需要改变
+        Mediator mediator =  new Mediator();
+        com.designpatterns.mediator.exampl2.Persion p1 =
+                new com.designpatterns.mediator.exampl2.Man("wjh","xixi",mediator);
+        com.designpatterns.mediator.exampl2.Persion p2 =
+                new com.designpatterns.mediator.exampl2.Women("liulili","xixi",mediator);
+        com.designpatterns.mediator.exampl2.Persion p3 =
+                new com.designpatterns.mediator.exampl2.Women("lixinai","haha",mediator);
+
+        p1.getParter(p2);
+        p1.getParter(p3);
+
+    }
+
+    /**
+     * Chain of responsibility 职责链模式
+     */
+    @Test
+    void testCoR() {
+
+        MakeCar head = new MakeCarHead();
+        MakeCar body = new MakeCarBody();
+        MakeCar tail = new MakeCarTail();
+
+     /*   //设置职责链顺序
+        head.setNextCarHandler(body);
+        body.setNextCarHandler(tail);
+        //执行职责链
+        head.handlerCar();*/
+
+        //设置职责链顺序
+        head.setNextCarHandler(body).setNextCarHandler(tail);
+        //执行职责链
+        head.handlerCar();
+
+
+    }
+
+    /**
+     * 模板方法
+     */
+    @Test
+    void testTemplate() {
+
+        Fight manf = new ManFight();
+
+        manf.warTemplate();
+
+        Fight womenf = new ManFight();
+
+        womenf.warTemplate();
+
+
+    }
+
+    /**
+     * 备忘录模式 memento
+     */
+    @Test
+    void testMemento() {
+
+       /* Company company = new Company("wjh", "liulili", "jiayuanqiang");
+        //创建一个备份
+        CompanyMemento memento = company.createMemento();
+        //修改company
+        company.setBoss("boss");
+
+        company.display();
+        //回滚company
+        company.rollBack(memento);
+
+        company.display();*/
+
+        //利用caretaker,符合单一职责原则
+        Company company = new Company("wjh", "liulili", "jiayuanqiang");
+        //创建一个备份
+        CareTaker careTaker = new CareTaker();
+        careTaker.setMemento(company.createMemento());
+        //修改company
+        company.setBoss("boss");
+
+        company.display();
+        //回滚company
+        company.rollBack(careTaker.getMemento());
+
+        company.display();
+
+    }
+
+    /**
+     * 命令模式 commond
+     */
+    @Test
+    void testCommond() {
+        Commond commond1 = new AppleCommond(new Peddler());
+        Commond commond2 = new BananaCommond(new Peddler());
+
+        Waiter waiter = new Waiter();
+
+        waiter.addOrder(commond1);
+        waiter.addOrder(commond2);
+
+        waiter.excutor();
+
+        waiter.removeOrder(commond1);
+
+        waiter.excutor();
+
+
+    }
+
+    /**
+     * visitor 访问者模式
+     */
+    @Test
+    void testVisitor() {
+
+        ParkConstruct construct = new ParkConstruct();
+        Visitor cleanerA = new CleanerAVisitor();
+        construct.accept(cleanerA);
+        Visitor cleanerB = new CleanerBVisitor();
+        construct.accept(cleanerB);
+        Visitor manager = new ManagerVisitor();
+        construct.accept(manager);
+
+
     }
 
 }
