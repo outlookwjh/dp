@@ -1,5 +1,9 @@
 package com.designpatterns.dp;
 
+import com.designpatterns.abstractFactory.factory.NorthFactory;
+import com.designpatterns.abstractFactory.factory.SourthFactory;
+import com.designpatterns.abstractFactory.factory.fruitFactory;
+import com.designpatterns.abstractFactory.product.Fruit_af;
 import com.designpatterns.factorymethod.AppleFactory;
 import com.designpatterns.factorymethod.peerFactory;
 import com.designpatterns.simplefactory.Factory;
@@ -28,6 +32,10 @@ class DpApplicationTests {
 
 	}
 
+	/**
+	 * 工厂方法
+	 * @throws Exception
+	 */
 	@Test
 	void testFactoryMethod() throws Exception {
 
@@ -41,6 +49,30 @@ class DpApplicationTests {
 		com.designpatterns.factorymethod.Fruit fruit1 = pf.createFruit();
 
 		fruit1.get();
+
+	}
+
+	/**
+	 * 抽象工厂
+	 * @throws Exception
+	 */
+	@Test
+	void testAbstractFactory() throws Exception {
+
+		//北方水果
+		Fruit_af  northApp = new NorthFactory().getApple();
+		northApp.get();
+
+		Fruit_af northBa = new NorthFactory().getBanana();
+		northBa.get();
+
+		//南方水果
+		fruitFactory factory = new SourthFactory();
+		factory.getApple().get();
+		factory.getBanana().get();
+
+
+
 
 	}
 
