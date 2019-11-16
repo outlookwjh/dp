@@ -2,7 +2,7 @@ package com.designpatterns.builder;
 
 public interface HouseBuilder {
 
-    public House d();
+    public House buildHouse();
 
     public void makeWall();
 
