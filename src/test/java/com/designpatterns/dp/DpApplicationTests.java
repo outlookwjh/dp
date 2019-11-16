@@ -4,6 +4,10 @@ import com.designpatterns.abstractFactory.factory.NorthFactory;
 import com.designpatterns.abstractFactory.factory.SourthFactory;
 import com.designpatterns.abstractFactory.factory.fruitFactory;
 import com.designpatterns.abstractFactory.product.Fruit_af;
+import com.designpatterns.builder.ClassRoomBuilder;
+import com.designpatterns.builder.Director;
+import com.designpatterns.builder.House;
+import com.designpatterns.builder.HouseBuilder;
 import com.designpatterns.factorymethod.AppleFactory;
 import com.designpatterns.factorymethod.peerFactory;
 import com.designpatterns.protoType.People;
@@ -108,7 +112,7 @@ class DpApplicationTests {
 	}
 
 	/**
-	 * singleton
+	 * ProtoType
 	 * @throws Exception
 	 */
 	@Test
@@ -152,5 +156,26 @@ class DpApplicationTests {
 		System.out.println(pp2);
 	}
 
+	/**
+	 * builder
+	 *
+	 * 现实场景类比： 校长准备修建一座教室，但是自己不会修，也不想知道怎么才能修好教室；
+	 * 				所以，校长准备通过招标的方式选择一个施工队来给自己修房子----houseBuilder
+	 * 			         并与一家工程咨询公司签订了工程咨询合同，该工程咨询公司负责监督施工队建设教室---director
+	 * 	扩展性： 校长如果需要建造一个球场，则只需要招标一个建造球场的施工队即可
+	 *
+	 *
+	 */
+	@Test
+	void testBuilder() throws Exception {
+		HouseBuilder classroomBuilder = new ClassRoomBuilder();
+		Director director = new Director();
+		director.makeHouse(classroomBuilder);
+		House house = classroomBuilder.buildHouse();
+
+		System.out.println(house.getFloor());
+
+
+	}
 
 }
