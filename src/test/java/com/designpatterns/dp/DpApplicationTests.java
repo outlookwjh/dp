@@ -6,11 +6,18 @@ import com.designpatterns.abstractFactory.factory.fruitFactory;
 import com.designpatterns.abstractFactory.product.Fruit_af;
 import com.designpatterns.factorymethod.AppleFactory;
 import com.designpatterns.factorymethod.peerFactory;
+import com.designpatterns.protoType.People;
+import com.designpatterns.protoType.People1;
 import com.designpatterns.simplefactory.Factory;
 
 import com.designpatterns.simplefactory.Fruit;
+import com.designpatterns.singleton.Person1;
+import com.designpatterns.singleton.Person2;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 class DpApplicationTests {
@@ -70,10 +77,80 @@ class DpApplicationTests {
 		fruitFactory factory = new SourthFactory();
 		factory.getApple().get();
 		factory.getBanana().get();
+	}
 
+	/**
+	 * singleton
+	 * @throws Exception
+	 */
+	@Test
+	void testSingleton() throws Exception {
 
+		//饿汉式
+		Person1 person1 = Person1.getInstance();
+
+		Person1 person12 = Person1.getInstance();
+
+		person1.setName("wjh");
+
+		person12.setName("wlll");
+		//打印pe'r'si'o'n1,结果是person12,证明是一个实例；
+		System.out.println(person1.getName());
+
+		//懒汉式
+		Person2 per = Person2.getInstance();
+		Person2 per1 = Person2.getInstance();
+		per.setName("xian");
+		per.setName("shanxi");
+		System.out.println(per.getName());
 
 
 	}
+
+	/**
+	 * singleton
+	 * @throws Exception
+	 */
+	@Test
+	void testProtoType() throws Exception {
+
+		//浅克隆, pet为引用对象，克隆时只是将栈内存中的引用指针拷贝一份，所以克隆后☞向同一个堆位置
+		People  people = new People();
+		people.setName("wjh");
+		people.setSex("male");
+		people.setAge(12);
+		List pet = new ArrayList();
+		pet.add("dog");
+		pet.add("rabbit");
+		people.setPets(pet);
+
+		People people1 = people.clone();
+		people1.setName("liull");
+
+		pet.add("cat");
+
+		System.out.println(people);
+		System.out.println(people1);
+
+		//深克隆
+		People1 pp = new People1();
+		pp.setName("wjh");
+		pp.setSex("male");
+		pp.setAge(12);
+		List petp = new ArrayList();
+		petp.add("dog");
+		petp.add("rabbit");
+		pp.setPets(petp);
+
+		People1 pp2 = pp.clone();
+		pp2.setName("liull");
+
+		petp.add("cat");
+
+
+		System.out.println(pp);
+		System.out.println(pp2);
+	}
+
 
 }
