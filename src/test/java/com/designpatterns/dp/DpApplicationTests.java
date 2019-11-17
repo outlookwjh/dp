@@ -8,6 +8,7 @@ import com.designpatterns.builder.ClassRoomBuilder;
 import com.designpatterns.builder.Director;
 import com.designpatterns.builder.House;
 import com.designpatterns.builder.HouseBuilder;
+import com.designpatterns.decorator.*;
 import com.designpatterns.factorymethod.AppleFactory;
 import com.designpatterns.factorymethod.peerFactory;
 import com.designpatterns.protoType.People;
@@ -177,5 +178,32 @@ class DpApplicationTests {
 
 
 	}
+
+	/**
+	 * decorator 装饰者模式
+	 *
+	 *
+	 */
+	@Test
+	void testDecorator() throws Exception {
+
+		CarAction car = new RunCar();
+
+		car.show();
+		System.out.println("=========================");
+		Decorator fly = new FlyDecorator(car);
+
+		fly.show();
+		System.out.println("=========================");
+		Decorator swim = new SwimDecorator(fly);
+
+		swim.show();
+
+
+
+	}
+
+
+
 
 }
