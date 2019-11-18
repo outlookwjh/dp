@@ -18,6 +18,8 @@ import com.designpatterns.simplefactory.Factory;
 import com.designpatterns.simplefactory.Fruit;
 import com.designpatterns.singleton.Person1;
 import com.designpatterns.singleton.Person2;
+import com.designpatterns.strategy.Context;
+import com.designpatterns.strategy.strategy;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -199,10 +201,21 @@ class DpApplicationTests {
 
 		swim.show();
 
-
-
 	}
 
+	/**
+	 * strategy
+	 * @throws Exception
+	 */
+	@Test
+	void testStrategy(){
+
+		Context context = new Context();
+
+		strategy strategy = context.getStrategy("1");
+
+		strategy.print("1");
+	}
 
 
 
