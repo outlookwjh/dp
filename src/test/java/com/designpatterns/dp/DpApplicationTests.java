@@ -11,6 +11,9 @@ import com.designpatterns.builder.HouseBuilder;
 import com.designpatterns.decorator.*;
 import com.designpatterns.factorymethod.AppleFactory;
 import com.designpatterns.factorymethod.peerFactory;
+import com.designpatterns.observer.ClickClass;
+import com.designpatterns.observer.StudentClass;
+import com.designpatterns.observer.TeacherClass;
 import com.designpatterns.protoType.People;
 import com.designpatterns.protoType.People1;
 import com.designpatterns.simplefactory.Factory;
@@ -217,6 +220,19 @@ class DpApplicationTests {
 		strategy.print("1");
 	}
 
+	/**
+	 * strategy
+	 * @throws Exception
+	 */
+	@Test
+	void testObserver(){
+
+		StudentClass student = new StudentClass();
+		ClickClass clickClass = new ClickClass();
+		clickClass.addObserver(student);
+		clickClass.addObserver(new TeacherClass());
+		clickClass.setDinglingling("dinglingling");
+	}
 
 
 }
